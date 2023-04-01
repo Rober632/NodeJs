@@ -1,4 +1,4 @@
-const deal = require('./modules/dealWithJson')
+const deal = require('./dealWithJson')
 const fileName='data.json'
 const yargs = require('yargs')
 const { argv } = require('yargs')
