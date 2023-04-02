@@ -52,10 +52,10 @@ yargs.command({
 yargs.command({
     command : 'edit' ,
     builder : {
-        id:{demandOption : true},
-        name : { demandOption : true},
-        email : { demandOption : true},
-        age : { demandOption : true}
+        id:{demandOption : true}
+//         name : { demandOption : true},
+//         email : { demandOption : true},
+//         age : { demandOption : true}
     } ,
 
     handler : () => { 
