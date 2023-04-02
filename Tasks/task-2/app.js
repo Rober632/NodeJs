@@ -5,7 +5,7 @@ const { argv } = require('yargs')
 
 
 const handeledit = (d, name , email , age) => {
-    d.name = name , d.email = email ,d.age = age
+        (name) ?  d.name = name : null , (email) ?  d.email = email :null ,age ? d.age = age : null
     return d
 }
 yargs.command({
