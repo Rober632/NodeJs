@@ -1,59 +1,71 @@
 const file = require('../helper/dealWithJson')
-const mongodb = require('../model/dbController')
+const dbConnect = require('../model/dbController')
+
 class todo{
-    static home = (req , res) => {
-        try{
-            connectDb(async(db)=>{
-            const list =  await db.collection("users").find()
-            res.render('home.hbs' , {list})
-            })
-        }
-        catch(e){
-                console.log('error');
-                res.send(e)
-            }
-    }
+    static home = (req,res)=>{  
+        dbConnect(db=> 
+                db.collection("todo").find().toArray((error , list)=>{
+                    res.render("home.hbs", { pageTitle:"Home", list ,isEmpty: !list.length
+                    })
+        })
+        )}
     static add = (req , res ) => {
         res.render('add.hbs')
     }
-        static addLogic = async(req,res)=>{
-        try{
-            connectDb(async(db)=>{
-                console.log("suc");
-                const task = {'id' : Date.now() , ...req.body, status : false ,  'date' : d.toDateString().slice(0, 15)}
-                await db.collection("users").insertOne(task)
-                res.redirect("/")
+    static addLogic = async(req,res)=>{
+            dbConnect((db)=>{
+                const d = new Date()
+                const task ={'id' : Date.now() , ...req.body ,status : false , 'date' : d.toDateString().slice(0, 15)}
+                db.collection("todo").insertOne(task)
+                .then(()=>res.redirect("/"))
+                .catch(e=>console.log(e))
             })
-        }
-        catch(e){
-            console.log('error');
-            res.send(e)
-        }
     }
+    // []
     static show = (req , res ) => {
-        const task  = db.collection("users").find({id : req.params.id})
-        res.render('show.hbs' , {task })
+        dbConnect( (db)=>{
+            db.collection("todo").find({id : req.params.id}).toArray((error , task) => {
+                console.log(task);
+                res.render('show.hbs' , { task } ) })
+            })
+          
+        
     }
-    static delete = (req , res ) => {
-        db.collection("users").deleteOne({id : req.params.id})
-        res.redirect('/')
+    static delete = (req,res)=>{
+        const postId = req.params.id
+        dbConnect(db=>
+        db.collection("todo")
+        .deleteOne({id:postId})
+            .then(r=> res.redirect("/"))
+        )
     }
     static deleteAll = (req , res ) => {
-        db.collection("users").deleteMany()
-        res.redirect('/')
+        dbConnect(db=> 
+            db.collection("todo").deleteMany())
+            res.redirect('/')
     }
     static activate = (req , res ) => {
-        db.collection("users").updateOne({id : req.params.id }, { $set : { status : true } })
+        dbConnect(db=> 
+        db.collection("users").updateOne({id : req.params.id }, { $set : { status : true } }))
         res.redirect('/')
     }
-    static edit = (req , res ) => {
-        const list  = db.collection("users").find()
-        const task = list.find(task => task.id == req.params.id)
-        res.render('edit.hbs' , {task , id : req.params.id})
+    static edit=(req,res)=>{
+        dbConnect(db=>{
+            db.collection("users").findOne({id:req.params.id})
+            .then( task=> res.render("edit.hbs", {task}))
+            })
     }
-    static editLogic = (req , res ) => {
-        const task = db.collection("users").replaceOne({id : req.params.id} , { id : req.params.id , title :req.body.title , content : req.body.content })
-        res.redirect('/')
+    static activate = (req , res ) => {
+        dbConnect(db=> 
+            db.collection("todo").updateOne({id : req.params.id }, { $set : { "status" : true } }))
+            console.log(req.params.id);
+            res.redirect('/')
+    }
+    static editLogic = (req,res)=>{
+        dbConnect(db=>{
+            db.collection("users").updateOne({id: (req.params.id)},{ $set:req.body })
+            .then(r=>res.redirect("/"))
+        }  )
     }
         static search = async( req , res ) => {
             const list =  db.collection("users").find()
