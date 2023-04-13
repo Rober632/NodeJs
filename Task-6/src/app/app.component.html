@@ -1,0 +1,10 @@
+<div class="md-form mt-4 w-100  d-flex justify-content-center">
+  <input class="form-control w-50" type="text" placeholder="Search" aria-label="Search" (keyup.enter)="handelSearch($event)" >
+</div>
+
+<div class="card m-4" style="width: 40rem;" *ngFor="let post of posts">
+  <div class="card-body p-4">
+    <h5 class="card-title">{{post.title}}</h5>
+  </div>
+</div>
+<router-outlet></router-outlet>
