@@ -1,0 +1,29 @@
+<div class="md-form mt-4 w-100  d-flex justify-content-center">
+  <input class="form-control w-50" type="text" placeholder="Search" aria-label="Search" (keyup.enter)="handelSearch($event)" >
+</div>
+<div *ngIf="filteredPosts">
+  <div class="card m-4" [class.active]="post.state" style="width: 40rem;" *ngFor="let post of filteredPosts">
+    <div class="card-body p-4">
+      <h5 class="card-title">{{post.title}}</h5>
+      <button class="btn btn-primary" [class] ='{"active-btn" : post.state , "inactive" :!post.state }' (click)="post.state = !post.state">Change</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!filteredPosts">
+  <div class="card m-4" [class.active]="post.state" style="width: 40rem;" *ngFor="let post of posts">
+    <div class="card-body p-4">
+      <h5 class="card-title">{{post.title}}</h5>
+      <button class="btn btn-primary" [class] ='{"active-btn" : post.state , "inactive" :!post.state }' (click)="post.state = !post.state">Change</button>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
+
+
+<!-- [style.color] = "'white'"  << single
+[style] = "'width : 200px ;height 200px'"  << mult
+[style] = "{width : 200px , height 200px}" -->
+
+<!-- [class.name] = "boolean"
+[class] = {booked : true , free : false} -->

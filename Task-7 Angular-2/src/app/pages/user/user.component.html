@@ -1,0 +1,24 @@
+<app-login (sendingUser)="handelUser($event)"></app-login>
+<table *ngIf="users.length > 0" class=" table align-middle mb-0 bg-white mt-4 p-4" >
+        <thead class="bg-light">
+            <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users ; let i = index" class="p-2">
+                <td class="text-muted text-center">{{user.name}}</td>
+                <td class="text-muted text-center">{{user.email}}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary" (click)="handelDelete(i)"> Delete </button>
+                    <button type="button" class="btn btn-danger m-2" (click)="handelEdit(i)"> edit </button>
+                </td>
+            </tr>
+        </tbody>
+</table>
+
+
+
+<!-- [ngStyle]="{'color' : 'white' , 'backgroundColor' : 'blue'}" -->

@@ -1,0 +1,9 @@
+.active{
+    background-color: rgb(68, 56, 56);
+    color: white;
+}
+
+.active-btn{
+    background-color: rgb(137, 69, 209);
+    color: rgba(245, 241, 241, 0.862);
+}
